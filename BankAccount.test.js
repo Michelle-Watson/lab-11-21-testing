@@ -4,7 +4,7 @@ import BankAccount from "./BankAccount.js";
 // SLIDE 12: Test Structure
 describe("BankAccount", () => {
   // Q1. Creating an account: Create an account, then verify that the account balance is 0 and the PIN is set to the pin value that was passed in to the constructor.
-  it("is created with correct details (Q1)", () => {
+  it("is created with correct details (Q1) and is not frozen (Q4)", () => {
     // Arrange: Set up an initial state
     const account = new BankAccount("1234");
 
@@ -17,6 +17,10 @@ describe("BankAccount", () => {
     expect(account.balance).toEqual(0);
     // Verify that the account's PIN is the same as the pin value passed in to the constructor.
     expect(account.pin).toEqual("1234");
+
+    // Q4b. Verify that a newly-created account is not frozen
+    // Act: Verify if the account is not frozen upon creation.
+    expect(account.isFrozen).toBe(false); // Account should not be frozen initially.
   });
 
   // Q2. Making a deposit: Create an account, call deposit with an amount, then verify that the account's balance increases by the deposited amount.
@@ -72,5 +76,18 @@ describe("BankAccount", () => {
     // Assert: Balance should be reduced by the withdrawn amount (100).
     expect(account.balance).toEqual(50); // Balance should not change.
     expect(withdrawnAmount).toBeUndefined(); // No amount should be returned because of incorrect PIN.
+  });
+
+  // Test-Driven Development (TDD)
+  // 4a. Freezing the account
+  it("can freeze the account (Q4a)", () => {
+    // Arrange: Create an account with PIN '1234'.
+    const account = new BankAccount("1234");
+
+    // Act: Freeze the account.
+    account.freeze();
+
+    // Assert: Check if the account is frozen.
+    expect(account.isFrozen).toBe(true);
   });
 });

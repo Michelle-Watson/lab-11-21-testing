@@ -5,6 +5,7 @@ export default class BankAccount {
   constructor(pin) {
     this.balance = 0;
     this.pin = pin;
+    this.isFrozen = false;
   }
 
   deposit(amount) {
@@ -28,5 +29,9 @@ export default class BankAccount {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  freeze() {
+    this.isFrozen = true;
   }
 }
