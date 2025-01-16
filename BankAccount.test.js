@@ -1,4 +1,5 @@
-import { expect, describe, it } from "vitest";
+// Q5. Notifying the Bank
+import { expect, describe, it, vi } from "vitest";
 import BankAccount from "./BankAccount.js";
 
 // SLIDE 12: Test Structure
@@ -89,5 +90,53 @@ describe("BankAccount", () => {
 
     // Assert: Check if the account is frozen.
     expect(account.isFrozen).toBe(true);
+  });
+
+  // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  // Diving Deeper: Notifying the bank
+  it("should notify the bank when a deposit is attempted on a frozen account", () => {
+    // Arrange: Create a mock function for notifyBank.
+    const notifyBankMock = vi.fn(); // This is the mock function to be used in place of notifyBank
+
+    // Act: Create an account with a PIN and the mock notifyBank function.
+    const account = new BankAccount("1234", notifyBankMock);
+
+    // Act: Freeze the account.
+    account.freeze();
+
+    // Act: Attempt to deposit into the frozen account.
+    account.deposit(100);
+
+    // Assert: The account balance should not change.
+    expect(account.balance).toEqual(0); // Balance should remain the same.
+
+    // Assert: The mock function should have been called once with the correct message.
+    expect(notifyBankMock).toHaveBeenCalledOnce(); // Checks if it was called exactly once.
+    expect(notifyBankMock).toHaveBeenCalledWith(
+      "Deposit attempted on frozen account."
+    ); // Verifies the call's message.
+  });
+
+  it("should notify the bank when a withdrawal is attempted on a frozen account", () => {
+    // Arrange: Create a mock function for notifyBank.
+    const notifyBankMock = vi.fn(); // This is the mock function.
+
+    // Act: Create an account with a PIN and the mock notifyBank function.
+    const account = new BankAccount("1234", notifyBankMock);
+
+    // Act: Freeze the account.
+    account.freeze();
+
+    // Act: Attempt to withdraw from the frozen account.
+    account.withdraw(50, "1234");
+
+    // Assert: The account balance should remain unchanged.
+    expect(account.balance).toEqual(0); // Balance should remain the same.
+
+    // Assert: The mock function should have been called once with the correct message.
+    expect(notifyBankMock).toHaveBeenCalledOnce(); // Checks if it was called exactly once.
+    expect(notifyBankMock).toHaveBeenCalledWith(
+      "Withdrawal attempted on frozen account."
+    ); // Verifies the call's message.
   });
 });
