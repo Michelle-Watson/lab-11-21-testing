@@ -56,7 +56,21 @@ describe("BankAccount", () => {
     const withdrawnAmount = account.withdraw(100, "1234");
 
     // Assert: Balance should be reduced by the withdrawn amount (100).
-    expect(account.balance).toEqual(50);
+    expect(account.balance).toEqual(50); // Balance should not change.
     expect(withdrawnAmount).toBeUndefined(); // No amount should be returned, withdrawal fails.
+  });
+
+  // Q3c. Create an account, then call withdraw with an incorrect pin value. Verify that the account balance doesn't change.
+  it("cannot withdraw money with incorrect PIN (Q3c)", () => {
+    // Arrange: Create an account with PIN '1234'.
+    const account = new BankAccount("1234");
+
+    // Act: Deposit 50 into the account, withdraw 100 with incorrect PIN
+    account.deposit(50);
+    const withdrawnAmount = account.withdraw(100, "5678");
+
+    // Assert: Balance should be reduced by the withdrawn amount (100).
+    expect(account.balance).toEqual(50); // Balance should not change.
+    expect(withdrawnAmount).toBeUndefined(); // No amount should be returned because of incorrect PIN.
   });
 });
