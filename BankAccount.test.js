@@ -37,12 +37,26 @@ describe("BankAccount", () => {
     // Arrange: Create an account with PIN '1234'.
     const account = new BankAccount("1234");
 
-    // Act: Deposit 200 into the account.
+    // Act: Deposit 200 into the account, withdraw 100
     account.deposit(200);
     const withdrawnAmount = account.withdraw(100, "1234");
 
     // Assert: Balance should be reduced by the withdrawn amount (100).
     expect(account.balance).toEqual(100);
     expect(withdrawnAmount).toEqual(100); // The returned amount should match the withdrawn amount.
+  });
+
+  // Q3b. Create an account, then call withdraw with an amount that is greater than the account balance. Verify that the account balance doesn't change.
+  it("cannot withdraw money with insufficient balance (Q3b)", () => {
+    // Arrange: Create an account with PIN '1234'.
+    const account = new BankAccount("1234");
+
+    // Act: Deposit 50 into the account, withdraw 100
+    account.deposit(50);
+    const withdrawnAmount = account.withdraw(100, "1234");
+
+    // Assert: Balance should be reduced by the withdrawn amount (100).
+    expect(account.balance).toEqual(50);
+    expect(withdrawnAmount).toBeUndefined(); // No amount should be returned, withdrawal fails.
   });
 });
